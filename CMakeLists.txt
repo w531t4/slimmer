@@ -3,6 +3,7 @@ project(slimmer CXX)
 set (APP_VERSION_NUMBER 1.2)
 include(ExternalProject)
 include(cmake/libev.cmake)
+include(cmake/lcdapi.cmake)
 #################################################################################
 # Libraries
 #set(LIBS ${LIBS} /usr/local/lib)
@@ -36,19 +37,13 @@ file(GLOB_RECURSE JSONCPP_LIST
         "json/*.cpp"
 )
 
-file(GLOB_RECURSE LCDAPI_LIST
-        "lcdapi/*.h"
-)
-
 file(GLOB_RECURSE TCLAP_LIST
         "tclap/*.h"
         "tclap/*.cpp"
 )
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${PROJECT_SOURCE_DIR}/lcdapi/include)
-link_directories(${PROJECT_SOURCE_DIR}/../lcdapi/.libs)
-add_executable(${PROJECT_NAME} ${SRC_LIST} ${JSONRPCCPP_LIST} ${JSONCPP_LIST} ${LCDAPI_LIST} ${TCLAP_LIST})
+add_executable(${PROJECT_NAME} ${SRC_LIST} ${JSONRPCCPP_LIST} ${JSONCPP_LIST} ${TCLAP_LIST})
 target_link_libraries (${PROJECT_NAME} lcdapi curl icuuc libev)
 add_definitions(-flto -fuse-linker-plugin -pipe)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
