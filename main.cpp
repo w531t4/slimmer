@@ -25,7 +25,7 @@
 #include "tclap/ArgException.h"
 
 #define EV_STANDALONE 1
-#include "libev/ev.c"
+#include "libev/ev.h"
 
 int main(int argc, char* argv[])
 {
