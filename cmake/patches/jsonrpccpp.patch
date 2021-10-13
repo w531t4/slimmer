@@ -1,0 +1,13 @@
+diff --git a/src/jsonrpccpp/client/rpcprotocolclient.cpp b/src/jsonrpccpp/client/rpcprotocolclient.cpp
+index 8356442..410c904 100644
+--- a/src/jsonrpccpp/client/rpcprotocolclient.cpp
++++ b/src/jsonrpccpp/client/rpcprotocolclient.cpp
+@@ -108,8 +118,6 @@ bool RpcProtocolClient::ValidateResponse(const Json::Value& response)
+     }
+     else if (this->version == JSONRPC_CLIENT_V2)
+     {
+-        if (!response.isMember(KEY_PROTOCOL_VERSION) || response[KEY_PROTOCOL_VERSION] != "2.0")
+-            return false;
+         if (response.isMember(KEY_RESULT) && response.isMember(KEY_ERROR))
+             return false;
+         if (!response.isMember(KEY_RESULT) && !response.isMember(KEY_ERROR))

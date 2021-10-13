@@ -7,6 +7,9 @@ include(cmake/libev.cmake)
 include(cmake/lcdapi.cmake)
 include(cmake/tclap.cmake)
 include(cmake/jsoncpp.cmake)
+include(cmake/jsonrpccpp.cmake)
+add_dependencies(jsonrpccpp-common jsoncpp)
+add_dependencies(jsonrpccpp-client jsoncpp)
 #################################################################################
 # Libraries
 #set(LIBS ${LIBS} /usr/local/lib)
@@ -30,15 +33,10 @@ file(GLOB SRC_LIST
         "*.h"
         "*.cpp"
 )
-file(GLOB_RECURSE JSONRPCCPP_LIST
-        "jsonrpccpp/*.h"
-        "jsonrpccpp/*.cpp"
-)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${PROJECT_SOURCE_DIR})
-add_executable(${PROJECT_NAME} ${SRC_LIST} ${JSONRPCCPP_LIST})
-target_link_libraries (${PROJECT_NAME} lcdapi icuuc icudata curl libev tclap jsoncpp)
+target_link_libraries (${PROJECT_NAME} lcdapi icuuc icudata curl libev tclap jsoncpp jsonrpccpp-common jsonrpccpp-client)
 add_definitions(-flto -fuse-linker-plugin -pipe)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
