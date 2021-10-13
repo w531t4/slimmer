@@ -79,7 +79,7 @@ string Screen::trail(const string& s) const
 */
 string Screen::toLCDString(const string& s)
 {
-	UnicodeString ucs = UnicodeString::fromUTF8(StringPiece(s.c_str()));
+	icu::UnicodeString ucs = icu::UnicodeString::fromUTF8(icu::StringPiece(s.c_str()));
 	char target[200];
 	int32_t targetsize = ucs.extract(0, ucs.length(), target, sizeof(target), Config::encoding().c_str());
 	target[targetsize] = 0;

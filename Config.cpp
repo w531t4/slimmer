@@ -141,7 +141,7 @@ int Config::processOptions(int argc, char* argv[])
 	}
 
 	// Testing the supplied encoding
-	UnicodeString ucs = UnicodeString::fromUTF8(" ");
+	icu::UnicodeString ucs = icu::UnicodeString::fromUTF8(" ");
 	int32_t targetsize = ucs.extract(0, ucs.length(), 0, 0, mEncoding.c_str());
 	if (targetsize < 1)
 	{
