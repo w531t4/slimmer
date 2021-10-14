@@ -28,7 +28,7 @@ using namespace std;
 class Config
 {
 public:
-	int static processOptions(int argc, char* argv[]);
+	void static processOptions(int argc, char* argv[]);
 
 	const bool static verbose() { return mVerbose; }
 	const string static lmsName() { return mLmsName; }

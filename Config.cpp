@@ -60,7 +60,7 @@ vector<string> Config::mInputDeviceFiles;
 string Config::mEncoding;
 int Config::mScrollSpeed;
 
-int Config::processOptions(int argc, char* argv[])
+void Config::processOptions(int argc, char* argv[])
 {
 	using namespace TCLAP;
 
