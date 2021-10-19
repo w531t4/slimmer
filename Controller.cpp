@@ -268,6 +268,9 @@ void Controller::handleEvent(const Event event)
 					break;
 				case MenuItem::TRACK:
 					actionLoad(selected, Server::LOAD);
+					mMenuScreenHideTimer.stop();
+					mMenuScreen.hide();
+					mMenuScreen.backToMainMenu();
 					break;
 				case MenuItem::BACK:
 					if (mMenuScreen.level() == 1)
