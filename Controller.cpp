@@ -338,6 +338,7 @@ void Controller::handleEvent(const Event event)
 				case MenuItem::BACK:
 					mMenuScreenHideTimer.stop();
 					mMenuScreen.hide();
+					mMenuScreen.backToMainMenu();
 					break;
 				default:
 					mMenuScreen.select();
