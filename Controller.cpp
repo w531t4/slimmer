@@ -156,7 +156,12 @@ void Controller::handleEvent(const Event event)
 	if (Config::verbose())
 		cout << "Event: " << event << endl;
 
-	stopStandby();
+	// if currently in standby mode, eat the current input to
+	if (mInStandby)
+	{
+		stopStandby();
+		return;
+	}
 	bool menuWasVisible = mMenuScreen.visible();
 
 	try
@@ -419,9 +424,11 @@ void Controller::hidePopup()
 
 void Controller::startStandby()
 {
-	mInStandby = true;
-	setBacklight(false);
-	mStatusUpdateTimer.set(Config::cPlayerStatusQueryIntervalInStandby, Config::cPlayerStatusQueryIntervalInStandby);
+	if (mPlayer.mode() != Player::Mode::Play) {
+		mInStandby = true;
+		setBacklight(false);
+		mStatusUpdateTimer.set(Config::cPlayerStatusQueryIntervalInStandby, Config::cPlayerStatusQueryIntervalInStandby);
+	}
 }
 
 void Controller::stopStandby()

@@ -44,7 +44,7 @@ const short int Config::cVolumeStep = 2;
 const short int Config::cSeekStep = 1;
 const short int Config::cNewMusicItems = 100;
 const short int Config::cTrackRestartLimit = 3;
-const double Config::cStandbyTimeout = 30;
+const double Config::cStandbyTimeout = 300;
 
 bool Config::mVerbose;
 string Config::mLmsName = "unknown";
