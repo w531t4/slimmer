@@ -23,17 +23,14 @@ ExternalProject_add(
         LOG_CONFIGURE 1
         LOG_BUILD 1
         GIT_REPOSITORY https://github.com/cinemast/libjson-rpc-cpp.git
-        #GIT_TAG v1.3.0 <-- latest tag
-        #GIT_TAG fe44ed8eb8db00099119af66479bc182e4d92e70 is between v0.5.0 and v0.7.0
-        GIT_TAG fe44ed8eb8db00099119af66479bc182e4d92e70
+        GIT_TAG v1.4.0
+        # i believe this tag occurred @/around original implementation
+        #GIT_TAG fe44ed8eb8db00099119af66479bc182e4d92e70
         GIT_PROGRESS 1
         BUILD_IN_SOURCE 0
         #UPDATE_COMMAND ""
         PATCH_COMMAND
                 git apply ${CMAKE_CURRENT_LIST_DIR}/patches/jsonrpccpp.patch || true
-        # This patch brings src/catch/CmakeLists.txt up to commit 58d7611bed50f30dadefe758649a42fc803433c0
-        COMMAND
-                git apply ${CMAKE_CURRENT_LIST_DIR}/patches/jsonrpccpp-catch.patch || true
 
 )
 ExternalProject_Get_property(${target}_external INSTALL_DIR)

@@ -1,13 +1,15 @@
 diff --git a/src/jsonrpccpp/client/rpcprotocolclient.cpp b/src/jsonrpccpp/client/rpcprotocolclient.cpp
-index 8356442..410c904 100644
+index 6833c7d..40f72ec 100644
 --- a/src/jsonrpccpp/client/rpcprotocolclient.cpp
 +++ b/src/jsonrpccpp/client/rpcprotocolclient.cpp
-@@ -108,8 +118,6 @@ bool RpcProtocolClient::ValidateResponse(const Json::Value& response)
-     }
-     else if (this->version == JSONRPC_CLIENT_V2)
-     {
--        if (!response.isMember(KEY_PROTOCOL_VERSION) || response[KEY_PROTOCOL_VERSION] != "2.0")
--            return false;
-         if (response.isMember(KEY_RESULT) && response.isMember(KEY_ERROR))
-             return false;
-         if (!response.isMember(KEY_RESULT) && !response.isMember(KEY_ERROR))
+@@ -99,8 +99,8 @@ bool RpcProtocolClient::ValidateResponse(const Json::Value &response) {
+         !(response[KEY_ERROR].isObject() && response[KEY_ERROR].isMember(KEY_ERROR_CODE) && response[KEY_ERROR][KEY_ERROR_CODE].isIntegral()))
+       return false;
+   } else if (this->version == JSONRPC_CLIENT_V2) {
+-    if (!response.isMember(KEY_PROTOCOL_VERSION) || response[KEY_PROTOCOL_VERSION] != "2.0")
+-      return false;
++    //if (!response.isMember(KEY_PROTOCOL_VERSION) || response[KEY_PROTOCOL_VERSION] != "2.0")
++    //  return false;
+     if (response.isMember(KEY_RESULT) && response.isMember(KEY_ERROR))
+       return false;
+     if (!response.isMember(KEY_RESULT) && !response.isMember(KEY_ERROR))
