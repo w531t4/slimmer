@@ -30,7 +30,11 @@ ExternalProject_add(
         BUILD_IN_SOURCE 0
         #UPDATE_COMMAND ""
         PATCH_COMMAND
-                git apply ${CMAKE_CURRENT_LIST_DIR}/patches/jsonrpccpp.patch
+                git apply ${CMAKE_CURRENT_LIST_DIR}/patches/jsonrpccpp.patch || true
+        # This patch brings src/catch/CmakeLists.txt up to commit 58d7611bed50f30dadefe758649a42fc803433c0
+        COMMAND
+                git apply ${CMAKE_CURRENT_LIST_DIR}/patches/jsonrpccpp-catch.patch || true
+
 )
 ExternalProject_Get_property(${target} INSTALL_DIR)
 add_library(jsonrpccpp-common SHARED IMPORTED)
