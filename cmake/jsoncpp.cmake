@@ -10,6 +10,7 @@ ExternalProject_add(
         BUILD_IN_SOURCE 0
         UPDATE_COMMAND ""
         BUILD_BYPRODUCTS <INSTALL_DIR>/lib/libjsoncpp.so
+        BUILD_BYPRODUCTS <INSTALL_DIR>/lib/libjsoncpp_static.a
 )
 ExternalProject_Get_property(${target}_external INSTALL_DIR)
 file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
@@ -17,5 +18,9 @@ file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
 add_library(${target} SHARED IMPORTED)
 set_target_properties(${target} PROPERTIES IMPORTED_LOCATION ${INSTALL_DIR}/lib/libjsoncpp.so)
 target_include_directories(${target} INTERFACE ${INSTALL_DIR}/include)
-
 add_dependencies(${target} ${target}_external)
+
+add_library(${target}_static STATIC IMPORTED)
+set_target_properties(${target}_static PROPERTIES IMPORTED_LOCATION ${INSTALL_DIR}/lib/libjsoncpp_static.a)
+target_include_directories(${target}_static INTERFACE ${INSTALL_DIR}/include)
+add_dependencies(${target}_static ${target}_external)

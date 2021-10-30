@@ -16,10 +16,10 @@ ExternalProject_add(
         CONFIGURE_COMMAND  "<SOURCE_DIR>/configure"
                            "--prefix=<INSTALL_DIR>"
                            "--includedir=<INSTALL_DIR>/include/libev"
-                           "--disable-static"
         BUILD_COMMAND      "make"
                            "-j4"
         BUILD_BYPRODUCTS <INSTALL_DIR>/lib/libev.so
+                         <INSTALL_DIR>/lib/libev.a
         INSTALL_COMMAND "mkdir"
                         "-p"
                         <INSTALL_DIR>/include/libev
@@ -33,3 +33,8 @@ add_library(${target} SHARED IMPORTED)
 set_target_properties(${target} PROPERTIES IMPORTED_LOCATION ${INSTALL_DIR}/lib/libev.so)
 target_include_directories(${target} INTERFACE ${INSTALL_DIR}/include)
 add_dependencies(${target} ${target}_external)
+
+add_library(${target}_static STATIC IMPORTED)
+set_target_properties(${target}_static PROPERTIES IMPORTED_LOCATION ${INSTALL_DIR}/lib/libev.a)
+target_include_directories(${target}_static INTERFACE ${INSTALL_DIR}/include)
+add_dependencies(${target}_static ${target}_external)

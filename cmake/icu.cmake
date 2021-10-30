@@ -19,6 +19,7 @@ ExternalProject_add(
                 "<SOURCE_DIR>/icu4c/source/configure"
                 "--prefix=<INSTALL_DIR>"
                 "--disable-tests"
+                "--enable-static"
                 "--disable-samples"
                 "--disable-renaming"
                 "--disable-extras"
@@ -29,6 +30,8 @@ ExternalProject_add(
                 make -j4 VERBOSE=1
         BUILD_BYPRODUCTS <INSTALL_DIR>/lib/libicuuc.so
                          <INSTALL_DIR>/lib/libicudata.so
+                         <INSTALL_DIR>/lib/libicuuc.a
+                         <INSTALL_DIR>/lib/libicudata.a
         INSTALL_COMMAND "mkdir"
                         "-p"
                         <INSTALL_DIR>
@@ -37,7 +40,6 @@ ExternalProject_add(
 )
 ExternalProject_Get_property(${target}_external INSTALL_DIR)
 file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
-
 add_library(${target}uc SHARED IMPORTED)
 set_target_properties(${target}uc PROPERTIES
                         IMPORTED_LOCATION ${INSTALL_DIR}/lib/libicuuc.so
@@ -50,6 +52,23 @@ set_target_properties(${target}data PROPERTIES
                         )
 target_include_directories(${target}data INTERFACE ${INSTALL_DIR}/include)
 
+add_library(${target}uc_static STATIC IMPORTED)
+set_target_properties(${target}uc_static PROPERTIES
+                        IMPORTED_LOCATION ${INSTALL_DIR}/lib/libicuuc.a
+                        )
+target_include_directories(${target}uc_static INTERFACE ${INSTALL_DIR}/include)
+
+add_library(${target}data_static STATIC IMPORTED)
+set_target_properties(${target}data_static PROPERTIES
+                        IMPORTED_LOCATION ${INSTALL_DIR}/lib/libicudata.a
+                        )
+target_include_directories(${target}data_static INTERFACE ${INSTALL_DIR}/include)
+
+
 add_dependencies(${target}uc ${target}_external)
 add_dependencies(${target}data ${target}_external)
 add_dependencies(${target}uc ${target}data)
+
+add_dependencies(${target}uc_static ${target}_external)
+add_dependencies(${target}data_static ${target}_external)
+add_dependencies(${target}uc_static ${target}data_static)
