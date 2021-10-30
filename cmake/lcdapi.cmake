@@ -1,6 +1,6 @@
-set(target lcdapi_external)
+set(target lcdapi)
 ExternalProject_add(
-        ${target}
+        ${target}_external
         CMAKE_ARGS  ""
         LOG_CONFIGURE 1
         LOG_BUILD 1
@@ -24,13 +24,10 @@ ExternalProject_add(
         COMMAND         "make"
                         "install"
 )
-ExternalProject_Get_property(${target} INSTALL_DIR)
-add_library(lcdapi SHARED IMPORTED)
-#set_target_properties(lcdapi PROPERTIES IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/build/${target}/src/${target}-install/lib/liblcdapi.so)
-#file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/build/${target}/src/${target}-install/include)
-#target_include_directories(lcdapi INTERFACE ${CMAKE_BINARY_DIR}/build/${target}/src/${target}-install/include)
-
-set_target_properties(lcdapi PROPERTIES IMPORTED_LOCATION ${INSTALL_DIR}/lib/liblcdapi.so)
+ExternalProject_Get_property(${target}_external INSTALL_DIR)
 file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
-target_include_directories(lcdapi INTERFACE ${INSTALL_DIR}/include)
-add_dependencies(lcdapi ${target})
+
+add_library(${target} SHARED IMPORTED)
+set_target_properties(${target} PROPERTIES IMPORTED_LOCATION ${INSTALL_DIR}/lib/liblcdapi.so)
+target_include_directories(${target} INTERFACE ${INSTALL_DIR}/include)
+add_dependencies(${target} ${target}_external)

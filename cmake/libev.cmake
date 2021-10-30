@@ -1,6 +1,6 @@
-set(target libev_external)
+set(target libev)
 ExternalProject_add(
-        ${target}
+        ${target}_external
         CMAKE_ARGS  ""
         LOG_CONFIGURE 1
         LOG_BUILD 1
@@ -26,9 +26,10 @@ ExternalProject_add(
         COMMAND         "make"
                         "install"
 )
-ExternalProject_Get_property(${target} INSTALL_DIR)
-add_library(libev SHARED IMPORTED)
-set_target_properties(libev PROPERTIES IMPORTED_LOCATION ${INSTALL_DIR}/lib/libev.so)
+ExternalProject_Get_property(${target}_external INSTALL_DIR)
 file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
-target_include_directories(libev INTERFACE ${INSTALL_DIR}/include)
-add_dependencies(libev ${target})
+
+add_library(${target} SHARED IMPORTED)
+set_target_properties(${target} PROPERTIES IMPORTED_LOCATION ${INSTALL_DIR}/lib/libev.so)
+target_include_directories(${target} INTERFACE ${INSTALL_DIR}/include)
+add_dependencies(${target} ${target}_external)

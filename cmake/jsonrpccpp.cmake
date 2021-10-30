@@ -1,8 +1,8 @@
 ExternalProject_Get_property(jsoncpp_external INSTALL_DIR)
 set(jsoncpp_installdir "${INSTALL_DIR}")
-set(target jsonrpccpp_external)
+set(target jsonrpccpp)
 ExternalProject_add(
-        ${target}
+        ${target}_external
         CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>"
                    "-DCOMPILE_TESTS=NO"
                    "-DCOMPILE_STUBGEN=NO"
@@ -36,18 +36,21 @@ ExternalProject_add(
                 git apply ${CMAKE_CURRENT_LIST_DIR}/patches/jsonrpccpp-catch.patch || true
 
 )
-ExternalProject_Get_property(${target} INSTALL_DIR)
-add_library(jsonrpccpp-common SHARED IMPORTED)
-add_library(jsonrpccpp-client SHARED IMPORTED)
-add_library(jsonrpccpp-server SHARED IMPORTED)
-set_target_properties(jsonrpccpp-common PROPERTIES
-                      IMPORTED_LOCATION ${INSTALL_DIR}/lib/libjsonrpccpp-common.so)
-set_target_properties(jsonrpccpp-client PROPERTIES
-                      IMPORTED_LOCATION ${INSTALL_DIR}/lib/libjsonrpccpp-client.so)
-set_target_properties(jsonrpccpp-server PROPERTIES
-                      IMPORTED_LOCATION ${INSTALL_DIR}/lib/libjsonrpccpp-server.so)
+ExternalProject_Get_property(${target}_external INSTALL_DIR)
 file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
-target_include_directories(jsonrpccpp-common INTERFACE ${INSTALL_DIR}/include)
-add_dependencies(jsonrpccpp-common ${target})
-add_dependencies(jsonrpccpp-client ${target})
-add_dependencies(jsonrpccpp-server ${target})
+
+add_library(${target}-common SHARED IMPORTED)
+set_target_properties(${target}-common PROPERTIES
+                      IMPORTED_LOCATION ${INSTALL_DIR}/lib/libjsonrpccpp-common.so)
+add_dependencies(${target}-common ${target}_external)
+target_include_directories(${target}-common INTERFACE ${INSTALL_DIR}/include)
+
+add_library(${target}-client SHARED IMPORTED)
+set_target_properties(${target}-client PROPERTIES
+                      IMPORTED_LOCATION ${INSTALL_DIR}/lib/libjsonrpccpp-client.so)
+add_dependencies(${target}-client ${target}_external)
+
+add_library(${target}-server SHARED IMPORTED)
+set_target_properties(${target}-server PROPERTIES
+                      IMPORTED_LOCATION ${INSTALL_DIR}/lib/libjsonrpccpp-server.so)
+add_dependencies(${target}-server ${target}_external)

@@ -1,6 +1,6 @@
-set(target icu_external)
+set(target icu)
 ExternalProject_add(
-        ${target}
+        ${target}_external
         CMAKE_ARGS  ""
         LOG_CONFIGURE 1
         LOG_BUILD 1
@@ -35,18 +35,21 @@ ExternalProject_add(
         COMMAND         "make"
                         "install"
 )
-ExternalProject_Get_property(${target} INSTALL_DIR)
-add_library(icuuc SHARED IMPORTED)
-add_library(icudata SHARED IMPORTED)
-set_target_properties(icuuc PROPERTIES
+ExternalProject_Get_property(${target}_external INSTALL_DIR)
+file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
+
+add_library(${target}uc SHARED IMPORTED)
+set_target_properties(${target}uc PROPERTIES
                         IMPORTED_LOCATION ${INSTALL_DIR}/lib/libicuuc.so
                         )
-set_target_properties(icudata PROPERTIES
+target_include_directories(${target}uc INTERFACE ${INSTALL_DIR}/include)
+
+add_library(${target}data SHARED IMPORTED)
+set_target_properties(${target}data PROPERTIES
                         IMPORTED_LOCATION ${INSTALL_DIR}/lib/libicudata.so
                         )
-file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
-target_include_directories(icuuc INTERFACE ${INSTALL_DIR}/include)
-target_include_directories(icudata INTERFACE ${INSTALL_DIR}/include)
-add_dependencies(icuuc ${target})
-add_dependencies(icudata ${target})
-add_dependencies(icuuc icudata)
+target_include_directories(${target}data INTERFACE ${INSTALL_DIR}/include)
+
+add_dependencies(${target}uc ${target}_external)
+add_dependencies(${target}data ${target}_external)
+add_dependencies(${target}uc ${target}data)

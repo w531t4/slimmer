@@ -1,4 +1,4 @@
-set(target tclap_external)
+set(target tclap)
 set(tclap_empty_tests_file "all:
 @:
 install:
@@ -7,7 +7,7 @@ install:
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/extras)
 file(WRITE ${CMAKE_BINARY_DIR}/extras/empty_makefile "${tclap_empty_tests_file}")
 ExternalProject_add(
-        ${target}
+        ${target}_external
         CMAKE_ARGS ""
         LOG_CONFIGURE 1
         LOG_BUILD 1
@@ -45,11 +45,10 @@ ExternalProject_add(
         COMMAND         "make"
                         "install"
 )
-ExternalProject_Get_property(${target} INSTALL_DIR)
+ExternalProject_Get_property(${target}_external INSTALL_DIR)
+file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
 
 # INTERFACE used here because this lib is header-only
-add_library(tclap INTERFACE)
-
-file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
-target_include_directories(tclap INTERFACE ${INSTALL_DIR}/include)
-add_dependencies(tclap ${target})
+add_library(${target} INTERFACE)
+target_include_directories(${target} INTERFACE ${INSTALL_DIR}/include)
+add_dependencies(${target} ${target}_external)
