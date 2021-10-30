@@ -36,6 +36,7 @@ file(GLOB SRC_LIST
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${PROJECT_SOURCE_DIR})
+add_executable(${PROJECT_NAME} ${SRC_LIST})
 target_link_libraries (${PROJECT_NAME} lcdapi icuuc icudata curl libev tclap jsoncpp jsonrpccpp-common jsonrpccpp-client)
 add_definitions(-flto -fuse-linker-plugin -pipe)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
