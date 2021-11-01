@@ -1,3 +1,6 @@
+ExternalProject_Get_property(zlib_external INSTALL_DIR)
+set(zlib_installdir "${INSTALL_DIR}")
+
 set(target curl)
 ExternalProject_add(
         ${target}_external
@@ -42,7 +45,9 @@ ExternalProject_add(
                     "-DCURL_DISABLE_TFTP=YES"
                     "-DCURL_DISABLE_VERBOSE_STRINGS=YES"
                     "-DENABLE_IPV6=NO"
-
+                    "-DZLIB_INCLUDE_DIR=${zlib_installdir}/include"
+                    "-DZLIB_LIBRARY=${zlib_installdir}/lib"
+        DEPENDS zlib_external
         LOG_CONFIGURE 1
         LOG_BUILD 1
         GIT_REPOSITORY https://github.com/curl/curl.git

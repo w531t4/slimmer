@@ -5,6 +5,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(ExternalProject)
+include(cmake/zlib.cmake)
 include(cmake/curl.cmake)
 include(cmake/icu.cmake)
 include(cmake/libev.cmake)
@@ -48,7 +49,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 
 add_executable(${PROJECT_NAME}_static ${SRC_LIST})
-target_link_libraries (${PROJECT_NAME}_static -static lcdapi_static icuuc_static icudata_static libev_static tclap jsoncpp_static jsonrpccpp-common_static jsonrpccpp-client_static curl_static -lz -lpthread)
+target_link_libraries (${PROJECT_NAME}_static -static lcdapi_static icuuc_static icudata_static libev_static tclap jsoncpp_static jsonrpccpp-common_static jsonrpccpp-client_static curl_static zlib_static -lpthread)
 set_property(TARGET ${PROJECT_NAME}_static PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${PROJECT_NAME}_static PROPERTY CXX_STANDARD_REQUIRED ON)
 
