@@ -13,9 +13,11 @@ ExternalProject_add(
                 sed -i -e "s:LDFLAGSICUDT=-nodefaultlibs -nostdlib:LDFLAGSICUDT=:" <SOURCE_DIR>/icu4c/source/config/mh-linux
         COMMAND
                 sed -i -e "s/#define U_DISABLE_RENAMING 0/#define U_DISABLE_RENAMING 1/" <SOURCE_DIR>/icu4c/source/common/unicode/uconfig.h
+        # use '--enable-tracing' to identify exactly what you're using
         CONFIGURE_COMMAND
                 ${CMAKE_COMMAND} -E env
-                #VERBOSE=1
+                VERBOSE=1
+                ICU_DATA_FILTER_FILE=${CMAKE_CURRENT_LIST_DIR}/patches/icu-filter.json
                 "<SOURCE_DIR>/icu4c/source/configure"
                 "--prefix=<INSTALL_DIR>"
                 "--disable-tests"
@@ -25,6 +27,7 @@ ExternalProject_add(
                 "--disable-extras"
                 "--disable-dyload"
                 "--disable-icu-config"
+                #"--enable-tracing"
                 "--enable-rpath"
         BUILD_COMMAND
                 make -j4 VERBOSE=1

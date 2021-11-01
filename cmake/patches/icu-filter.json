@@ -1,0 +1,12 @@
+{
+    "strategy": "additive",
+    "featureFilters": {
+        "conversion_mappings": "include"
+    },
+    "localeFilter": {
+      "filterType": "language",
+      "includelist": [
+        "en"
+      ]
+    }
+  }
